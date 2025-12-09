@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.spire.platform.u20231b475.regulations.domain.model.queries.GetOrbitThresholdByOrbitClassQuery;
 import com.spire.platform.u20231b475.regulations.domain.service.OrbitThresholdQueryService;
-import com.spire.platform.u20231b475.regulations.infrastructure.persistence.jpa.repositories.OrbitThresholdRepository;
 import com.spire.platform.u20231b475.regulations.interfaces.acl.RegulationsContextFacade;
 
 /**
@@ -15,11 +14,9 @@ import com.spire.platform.u20231b475.regulations.interfaces.acl.RegulationsConte
 @Service
 public class RegulationsContextFacadeImpl implements RegulationsContextFacade {
   private final OrbitThresholdQueryService service;
-  private final OrbitThresholdRepository repo;
 
-  public RegulationsContextFacadeImpl(OrbitThresholdQueryService service, OrbitThresholdRepository repo) {
+  public RegulationsContextFacadeImpl(OrbitThresholdQueryService service) {
     this.service = service;
-    this.repo = repo;
   }
 
   @Override
@@ -32,8 +29,14 @@ public class RegulationsContextFacadeImpl implements RegulationsContextFacade {
   }
 
   public boolean isUnderutilized(String orbitClass, Integer estimatedDuration) {
-    return repo.findByOrbitClass(orbitClass)
-        .map(threshold -> estimatedDuration < (threshold.getMaxSafeDuration() * 0.2))
-        .orElse(false);
+    var query = new GetOrbitThresholdByOrbitClassQuery(orbitClass);
+    var threshold = service.handle(query);
+
+    if (threshold.isEmpty())
+      throw new IllegalArgumentException("No orbit threshold found for the given orbit class.");
+
+    var maxSafeDuration = threshold.get().getMaxSafeDuration();
+
+    return estimatedDuration < (maxSafeDuration * 0.2);
   }
 }
