@@ -15,16 +15,15 @@ import lombok.Getter;
  * @author Valentino Solis
  */
 @Entity
+@Getter
 public class OrbitThreshold {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Getter
   @NotBlank(message = "Orbit class is required")
   private String orbitClass;
 
-  @Getter
   @NotNull(message = "Max safe duration is required")
   @Min(0)
   private Integer maxSafeDuration;
