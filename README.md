@@ -25,6 +25,27 @@ Requiere que su información sea poblada en la base de datos de forma automátic
 | 2    | MEO          | 450               |
 | 3    | GEO          | 600               |
 
+## Alert
+
+- Bounded Context: `monitoring`
+- Auditable, por ende tiene los atributos `createdAt` y `updatedAt`
+
+### Atributos
+
+- `id` (Long, Primary Key, autogenerado)
+- `satelliteCode` (identificador del negocio, embedded type obligatorio, no vacío, solo puede contener un valor UUID válido)
+- `alertType` (AlertType enumeration, obligatorio, no nulo),
+- `registeredAt` (LocalDateTime, obligatorio, no vacío, generado automáticamente al momento del registro).
+
+#### AlertType enum
+
+| `id` | `Name`                  |
+| ---- | ----------------------- |
+| 0    | UNSAFE_ORBIT_TASK       |
+| 1    | NODE_COMMUNICATION_LOST |
+| 2    | SYSTEM_ERROR            |
+| 3    | OTHER                   |
+
 ## Mission Assignment
 
 - Bounded Context: `missions`
@@ -49,27 +70,6 @@ Requiere que su información sea poblada en la base de datos de forma automátic
 ### Nota
 
 Especifica que al momento de registrar un **mission assignment**, si el valor de `estimatedDuration` **es menor al 20%** del `maxSafeDuration` permitido para la `orbitClass`, se considera un uso subóptimo del nodo satelital. En estos casos, la misión se registra normalmente, pero se debe emitir un evento `OrbitWindowUnderutilizedEvent`
-
-## Alert
-
-- Bounded Context: `monitoring`
-- Auditable, por ende tiene los atributos `createdAt` y `updatedAt`
-
-### Atributos
-
-- `id` (Long, Primary Key, autogenerado)
-- `satelliteCode` (identificador del negocio, embedded type obligatorio, no vacío, solo puede contener un valor UUID válido)
-- `alertType` (AlertType enumeration, obligatorio, no nulo),
-- `registeredAt` (LocalDateTime, obligatorio, no vacío, generado automáticamente al momento del registro).
-
-#### AlertType enum
-
-| `id` | `Name`                  |
-| ---- | ----------------------- |
-| 0    | UNSAFE_ORBIT_TASK       |
-| 1    | NODE_COMMUNICATION_LOST |
-| 2    | SYSTEM_ERROR            |
-| 3    | OTHER                   |
 
 # Business Rules
 
