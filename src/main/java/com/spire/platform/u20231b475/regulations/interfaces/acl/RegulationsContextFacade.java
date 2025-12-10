@@ -7,10 +7,11 @@ package com.spire.platform.u20231b475.regulations.interfaces.acl;
  */
 public interface RegulationsContextFacade {
   /**
-   * Fetches an orbit threshold by its orbit class
+   * This method determines whether an orbit window is underutilized or not.
    * 
-   * @param orbitClass the orbit class
-   * @return The OrbitThreshold ID
+   * @param orbitClass        the orbit class
+   * @param estimatedDuration the estimated duration
+   * @return true if it's being underutilized, otherwise false.
    */
-  Long fetchByOrbitClass(String orbitClass);
+  public boolean isUnderutilized(String orbitClass, Integer estimatedDuration);
 }

@@ -19,15 +19,8 @@ public class RegulationsContextFacadeImpl implements RegulationsContextFacade {
     this.service = service;
   }
 
+  // inherited javadoc
   @Override
-  public Long fetchByOrbitClass(String orbitClass) {
-    var query = new GetOrbitThresholdByOrbitClassQuery(orbitClass);
-
-    var orbitThreshold = service.handle(query);
-
-    return orbitThreshold.isEmpty() ? 0L : orbitThreshold.get().getId();
-  }
-
   public boolean isUnderutilized(String orbitClass, Integer estimatedDuration) {
     var query = new GetOrbitThresholdByOrbitClassQuery(orbitClass);
     var threshold = service.handle(query);
