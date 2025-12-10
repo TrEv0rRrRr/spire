@@ -12,6 +12,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -30,6 +31,7 @@ public class MissionAssignment extends AuditableAbstractAggregateRoot<MissionAss
   private String orbitClass;
 
   @NotNull(message = "The estimated duration is required")
+  @Min(1)
   private Integer estimatedDuration;
 
   @Enumerated(EnumType.STRING)
